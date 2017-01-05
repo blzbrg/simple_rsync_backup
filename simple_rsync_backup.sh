@@ -2,9 +2,10 @@
 set -euo pipefail
 IFS=$'\n\t'
 
-# find the most recent firefox automatic bookmark backup
-echo -n "finding firefox bookmarks..." | tee -a simple_rsync_backup.log
+# find the firefox profile
 PROFILE_PATH=~/.mozilla/firefox/`grep "Path" ~/.mozilla/firefox/profiles.ini | sed -r 's/Path=(.+)/\1/'`
+# find the most recent firefox automatic bookmark backup
+echo -n "copying most recent firefox bookmarks to ~/most_recent_bookmark_backup.jsonlz4..." | tee -a simple_rsync_backup.log
 TARGET_BACKUP=$PROFILE_PATH"/bookmarkbackups/"`ls -1t $PROFILE_PATH"/bookmarkbackups" | head -n 1`
 # copy it to home folder
 cp $TARGET_BACKUP ~/most_recent_bookmark_backup.jsonlz4
